@@ -1,0 +1,14 @@
+{
+  "name": "wasm-cpp-base",
+  "version": "1.0.0",
+  "description": "Basic set up for compiling and running C++ wasm code",
+  "main": "index.mjs",
+  "scripts": {
+    "build": "mkdir -p build; em++ src/main.cpp src/add.cpp -o build/main.js -O2 -s EXPORTED_FUNCTIONS=_add -s EXPORTED_RUNTIME_METHODS=ccall,cwrap && cp src/*.html src/*.js src/*.css build/",
+    "serve": "emrun --port 3000 build",
+    "start": "npm run build && npm run serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
