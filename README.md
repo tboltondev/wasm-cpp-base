@@ -12,6 +12,7 @@ cmake --build build/
 Further builds can be created only with `cmake --build build/`
 
 ### To serve the built files:
+Any basic web server can be used, emsdk comes with the `emrun` command for this.
 ```sh
 emrun --port 3000 build
 ```
