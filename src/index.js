@@ -4,6 +4,18 @@ const wasmAdd = Module.cwrap(
     ["number", "number"]
 );
 
+const wasmSubtract = Module.cwrap(
+    "subtract",
+    "number",
+    ["number", "number"]
+);
+
+const wasmMultiply = Module.cwrap(
+    "multiply",
+    "number",
+    ["number", "number"]
+);
+
 const appRoot = document.querySelector("#root");
 
 const Input = () => {
@@ -37,8 +49,34 @@ const Div = ({ text, children, className }) => {
     return div;
 };
 
+/**
+ *  Option
+ *  { text: string, value: string }
+ */
+const Dropdown = ({ options }) => {
+    const select = document.createElement("select");
+    select.setAttribute("id", "operatorSelector");
+
+    options.forEach(option => {
+        const optionEl = document.createElement("option");
+        optionEl.innerText = option.text;
+        optionEl.setAttribute("value", option.value);
+        select.appendChild(optionEl);
+    });
+
+    return select;
+};
+
 const input1 = Input();
 const input2 = Input();
+
+const operator = Dropdown({
+    options: [
+        { text: "+", value: "+" },
+        { text: "-", value: "-" },
+        { text: "x", value: "x" },
+    ]
+});
 
 const handleClick = () => {
     const val1 = input1.value;
@@ -49,15 +87,13 @@ const handleClick = () => {
     appRoot.appendChild(sum);
 };
 
-const addSign = Div({ text: "+" });
-
 const button = Button({
     text: "=",
     onClick: handleClick
 });
 
 const inputs = Div({
-    children: [input1, addSign, input2, button],
+    children: [input1, operator, input2, button],
     className: "inputs",
 });
 
