@@ -1,5 +1,7 @@
 # wasm-cpp-base
 
+A basic template for C++ WebAssembly projects.
+
 ### Pre-requisite:
 Install emsdk by following the instructions on the
 [emscripten site](https://emscripten.org/docs/getting_started/downloads.html)
