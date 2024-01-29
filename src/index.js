@@ -16,6 +16,12 @@ const wasmMultiply = Module.cwrap(
     ["number", "number"]
 );
 
+const wasmDivide = Module.cwrap(
+    "divide",
+    "number",
+    ["number", "number"]
+);
+
 const appRoot = document.querySelector("#root");
 
 const Input = () => {
@@ -74,7 +80,8 @@ const operator = Dropdown({
     options: [
         { text: "+", value: "+" },
         { text: "-", value: "-" },
-        { text: "x", value: "x" },
+        { text: "✕", value: "✕" },
+        { text: "÷", value: "÷" },
     ],
     id: "operatorSelector",
 });
@@ -92,8 +99,11 @@ const handleClick = () => {
         case "-":
             result = wasmSubtract(val1, val2);
             break;
-        case "x":
+        case "✕":
             result = wasmMultiply(val1, val2);
+            break;
+        case "÷":
+            result = wasmDivide(val1, val2);
             break;
     }
 

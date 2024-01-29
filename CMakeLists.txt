@@ -13,15 +13,19 @@ add_executable(
   src/subtract.cpp
   src/subtract.h
   src/multiply.cpp
-  src/multiply.h)
+  src/multiply.h
+  src/divide.cpp
+  src/divide.h
+  src/index.html)
 
 if(EMSCRIPTEN)
-  target_link_options(main PRIVATE -sEXPORTED_FUNCTIONS=['_add','_subtract','_multiply']
-                      -sEXPORTED_RUNTIME_METHODS=['ccall','cwrap'])
+  target_link_options(
+    main PRIVATE
+    -sEXPORTED_FUNCTIONS=['_add','_subtract','_multiply','_divide']
+    -sEXPORTED_RUNTIME_METHODS=['ccall','cwrap'])
 endif()
 
-file(GLOB PUBLIC_HTML "src/*.html")
-file(COPY ${PUBLIC_HTML} DESTINATION .)
+# file(GLOB PUBLIC_HTML "src/*.html") file(COPY ${PUBLIC_HTML} DESTINATION .)
 
 file(GLOB PUBLIC_JS "src/*.js")
 file(COPY ${PUBLIC_JS} DESTINATION .)
