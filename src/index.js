@@ -1,89 +1,67 @@
-const wasmAdd = Module.cwrap(
-    "add",
-    "number",
-    ["number", "number"]
-);
+const wasm = {
+    add: Module.cwrap("add", "number", ["number", "number"]),
+    subtract: Module.cwrap("subtract", "number", ["number", "number"]),
+    multiply: Module.cwrap("multiply", "number", ["number", "number"]),
+    divide: Module.cwrap("divide", "number", ["number", "number"]),
+};
 
-const wasmSubtract = Module.cwrap(
-    "subtract",
-    "number",
-    ["number", "number"]
-);
-
-const wasmMultiply = Module.cwrap(
-    "multiply",
-    "number",
-    ["number", "number"]
-);
-
-const wasmDivide = Module.cwrap(
-    "divide",
-    "number",
-    ["number", "number"]
-);
+const ADD = "+";
+const SUBTRACT = "-";
+const MULTIPLY = "x";
+const DIVIDE = "÷";
 
 const appRoot = document.querySelector("#root");
 
-const Input = () => {
-    const input = document.createElement("input");
-    input.setAttribute("type", "text");
-    return input;
-};
+const createElement = (parameters) => {
+    const { tag, text, attributes, eventListeners, children } = parameters;
 
-const Button = ({ text, onClick }) => {
-    const btn = document.createElement("button");
-    btn.innerText = text;
-    btn.addEventListener("click", onClick);
-    return btn;
-};
+    const element = document.createElement(tag);
 
-const Div = ({ text, children, className }) => {
-    const div = document.createElement("div");
+    if (text) element.innerText = text;
 
-    if (text) {
-        div.innerText = text;
+    if (attributes) {
+        for (attribute in attributes) {
+            if (attribute === "className") {
+                element.setAttribute("class", attributes[attribute]);
+            } else {
+                element.setAttribute(attribute, attributes[attribute]);
+            }
+        }
+    }
+
+    if (eventListeners) {
+        for (listener in eventListeners) {
+            element.addEventListener(listener, eventListeners[listener]);
+        }
     }
 
     if (children) {
-        children.forEach(child => div.appendChild(child));
+        children.forEach(child => element.appendChild(child));
     }
 
-    if (className) {
-        div.setAttribute("class", className);
-    }
-
-    return div;
+    return element;
 };
 
-/**
- *  Option
- *  { text: string, value: string }
- */
-const Dropdown = ({ options, id }) => {
-    const select = document.createElement("select");
-    select.setAttribute("id", id);
+const input1 = createElement({
+    tag: "input",
+    attributes: { type: "text" }
+});
+const input2 = createElement({
+    tag: "input",
+    attributes: { type: "text" }
+});
 
-    options.forEach(option => {
-        const optionEl = document.createElement("option");
-        optionEl.innerText = option.text;
-        optionEl.setAttribute("value", option.value);
-        select.appendChild(optionEl);
-    });
-
-    return select;
-};
-
-const input1 = Input();
-const input2 = Input();
-
-const operator = Dropdown({
-    options: [
-        { text: "+", value: "+" },
-        { text: "-", value: "-" },
-        { text: "✕", value: "✕" },
-        { text: "÷", value: "÷" },
-    ],
-    id: "operatorSelector",
+const operators = [ADD, SUBTRACT, MULTIPLY, DIVIDE];
+const selector = createElement({
+    tag: "select",
+    attributes: { id: "operatorSelector" },
+    children: operators.map(operator =>
+        createElement({
+            tag: "option",
+            text: operator,
+            attributes: { value: operator },
+        })
+    ),
 });
 
 const handleClick = () => {
@@ -92,33 +70,40 @@ const handleClick = () => {
 
     let result;
 
-    switch (operator.value) {
-        case "+":
-            result = wasmAdd(val1, val2);
+    switch (selector.value) {
+        case ADD:
+            result = wasm.add(val1, val2);
             break;
-        case "-":
-            result = wasmSubtract(val1, val2);
+        case SUBTRACT:
+            result = wasm.subtract(val1, val2);
             break;
-        case "✕":
-            result = wasmMultiply(val1, val2);
+        case MULTIPLY:
+            result = wasm.multiply(val1, val2);
             break;
-        case "÷":
-            result = wasmDivide(val1, val2);
+        case DIVIDE:
+            result = wasm.divide(val1, val2);
             break;
     }
 
-    const sum = Div({ text: `${val1} ${operator.value} ${val2} = ${result}` });
+    const sum = createElement({
+        tag: "div",
+        text: `${val1} ${selector.value} ${val2} = ${result}`,
+    });
     appRoot.appendChild(sum);
 };
 
-const button = Button({
+const button = createElement({
+    tag: "button",
     text: "=",
-    onClick: handleClick
+    eventListeners: {
+        click: handleClick,
+    },
 });
 
-const inputs = Div({
-    children: [input1, operator, input2, button],
-    className: "inputs",
+const inputs = createElement({
+    tag: "div",
+    attributes: { className: "inputs" },
+    children: [input1, selector, input2, button],
 });
 
 const components = [inputs];

@@ -33,6 +33,7 @@ button {
 select {
     background-color: #444;
     color: #bbb;
+    border: none;
     padding: 0.2rem 0.4rem;
     margin: 0.2rem;
     border-radius: 5px;
