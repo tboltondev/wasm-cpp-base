@@ -15,8 +15,7 @@ add_executable(
   src/multiply.cpp
   src/multiply.h
   src/divide.cpp
-  src/divide.h
-  src/index.html)
+  src/divide.h)
 
 if(EMSCRIPTEN)
   target_link_options(
@@ -25,7 +24,8 @@ if(EMSCRIPTEN)
     -sEXPORTED_RUNTIME_METHODS=['ccall','cwrap'])
 endif()
 
-# file(GLOB PUBLIC_HTML "src/*.html") file(COPY ${PUBLIC_HTML} DESTINATION .)
+file(GLOB PUBLIC_HTML "src/*.html")
+file(COPY ${PUBLIC_HTML} DESTINATION .)
 
 file(GLOB PUBLIC_JS "src/*.js")
 file(COPY ${PUBLIC_JS} DESTINATION .)
