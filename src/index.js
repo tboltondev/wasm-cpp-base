@@ -53,9 +53,9 @@ const Div = ({ text, children, className }) => {
  *  Option
  *  { text: string, value: string }
  */
-const Dropdown = ({ options }) => {
+const Dropdown = ({ options, id }) => {
     const select = document.createElement("select");
-    select.setAttribute("id", "operatorSelector");
+    select.setAttribute("id", id);
 
     options.forEach(option => {
         const optionEl = document.createElement("option");
@@ -75,15 +75,29 @@ const operator = Dropdown({
         { text: "+", value: "+" },
         { text: "-", value: "-" },
         { text: "x", value: "x" },
-    ]
+    ],
+    id: "operatorSelector",
 });
 
 const handleClick = () => {
     const val1 = input1.value;
     const val2 = input2.value;
-    const result = wasmAdd(val1, val2);
 
-    const sum = Div({ text: `${val1} + ${val2} = ${result}` });
+    let result;
+
+    switch (operator.value) {
+        case "+":
+            result = wasmAdd(val1, val2);
+            break;
+        case "-":
+            result = wasmSubtract(val1, val2);
+            break;
+        case "x":
+            result = wasmMultiply(val1, val2);
+            break;
+    }
+
+    const sum = Div({ text: `${val1} ${operator.value} ${val2} = ${result}` });
     appRoot.appendChild(sum);
 };
 
