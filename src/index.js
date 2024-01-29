@@ -4,6 +4,24 @@ const wasmAdd = Module.cwrap(
     ["number", "number"]
 );
 
+const wasmSubtract = Module.cwrap(
+    "subtract",
+    "number",
+    ["number", "number"]
+);
+
+const wasmMultiply = Module.cwrap(
+    "multiply",
+    "number",
+    ["number", "number"]
+);
+
+const wasmDivide = Module.cwrap(
+    "divide",
+    "number",
+    ["number", "number"]
+);
+
 const appRoot = document.querySelector("#root");
 
 const Input = () => {
@@ -37,19 +55,61 @@ const Div = ({ text, children, className }) => {
     return div;
 };
 
+/**
+ *  Option
+ *  { text: string, value: string }
+ */
+const Dropdown = ({ options, id }) => {
+    const select = document.createElement("select");
+    select.setAttribute("id", id);
+
+    options.forEach(option => {
+        const optionEl = document.createElement("option");
+        optionEl.innerText = option.text;
+        optionEl.setAttribute("value", option.value);
+        select.appendChild(optionEl);
+    });
+
+    return select;
+};
+
 const input1 = Input();
 const input2 = Input();
+
+const operator = Dropdown({
+    options: [
+        { text: "+", value: "+" },
+        { text: "-", value: "-" },
+        { text: "✕", value: "✕" },
+        { text: "÷", value: "÷" },
+    ],
+    id: "operatorSelector",
+});
 
 const handleClick = () => {
     const val1 = input1.value;
     const val2 = input2.value;
-    const result = wasmAdd(val1, val2);
 
-    const sum = Div({ text: `${val1} + ${val2} = ${result}` });
+    let result;
+
+    switch (operator.value) {
+        case "+":
+            result = wasmAdd(val1, val2);
+            break;
+        case "-":
+            result = wasmSubtract(val1, val2);
+            break;
+        case "✕":
+            result = wasmMultiply(val1, val2);
+            break;
+        case "÷":
+            result = wasmDivide(val1, val2);
+            break;
+    }
+
+    const sum = Div({ text: `${val1} ${operator.value} ${val2} = ${result}` });
     appRoot.appendChild(sum);
 };
-
-const addSign = Div({ text: "+" });
 
 const button = Button({
     text: "=",
@@ -57,7 +117,7 @@ const button = Button({
 });
 
 const inputs = Div({
-    children: [input1, addSign, input2, button],
+    children: [input1, operator, input2, button],
     className: "inputs",
 });
 
