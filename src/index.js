@@ -1,61 +1,13 @@
-const wasm = {
-    add: Module.cwrap("add", "number", ["number", "number"]),
-    subtract: Module.cwrap("subtract", "number", ["number", "number"]),
-    multiply: Module.cwrap("multiply", "number", ["number", "number"]),
-    divide: Module.cwrap("divide", "number", ["number", "number"]),
-};
-
-const ADD = "+";
-const SUBTRACT = "-";
-const MULTIPLY = "x";
-const DIVIDE = "÷";
+import { createElement } from "./createElement.js";
+import { Equals } from "./equals.js";
+import { ADD, SUBTRACT, MULTIPLY, DIVIDE } from "./operators.js";
 
 const appRoot = document.querySelector("#root");
 
-const createElement = (parameters) => {
-    const { tag, text, attributes, eventListeners, children } = parameters;
-
-    const element = document.createElement(tag);
-
-    if (text) element.innerText = text;
-
-    if (attributes) {
-        for (attribute in attributes) {
-            if (attribute === "className") {
-                element.setAttribute("class", attributes[attribute]);
-            } else {
-                element.setAttribute(attribute, attributes[attribute]);
-            }
-        }
-    }
-
-    if (eventListeners) {
-        for (listener in eventListeners) {
-            element.addEventListener(listener, eventListeners[listener]);
-        }
-    }
-
-    if (children) {
-        children.forEach(child => element.appendChild(child));
-    }
-
-    return element;
-};
-
-const input1 = createElement({
-    tag: "input",
-    attributes: { type: "text" }
-});
-const input2 = createElement({
-    tag: "input",
-    attributes: { type: "text" }
-});
-
-const operators = [ADD, SUBTRACT, MULTIPLY, DIVIDE];
-const selector = createElement({
+const OperatorSelector = () => createElement({
     tag: "select",
     attributes: { id: "operatorSelector" },
-    children: operators.map(operator =>
+    children: [ADD, SUBTRACT, MULTIPLY, DIVIDE].map(operator =>
         createElement({
             tag: "option",
             text: operator,
@@ -64,49 +16,61 @@ const selector = createElement({
     ),
 });
 
-const handleClick = () => {
-    const val1 = input1.value;
-    const val2 = input2.value;
-
-    let result;
-
-    switch (selector.value) {
-        case ADD:
-            result = wasm.add(val1, val2);
-            break;
-        case SUBTRACT:
-            result = wasm.subtract(val1, val2);
-            break;
-        case MULTIPLY:
-            result = wasm.multiply(val1, val2);
-            break;
-        case DIVIDE:
-            result = wasm.divide(val1, val2);
-            break;
-    }
-
-    const sum = createElement({
-        tag: "div",
-        text: `${val1} ${selector.value} ${val2} = ${result}`,
+const Inputs = () => {
+    const input1 = createElement({
+        tag: "input",
+        attributes: { type: "text" },
+        eventListeners: {
+            change: (event) => {
+                state.val1 = event.target.value;
+            },
+        },
     });
-    appRoot.appendChild(sum);
+
+    const input2 = createElement({
+        tag: "input",
+        attributes: { type: "text" },
+        eventListeners: {
+            change: (event) => {
+                state.val2 = event.target.value;
+            },
+        },
+    });
+
+    const selector = OperatorSelector();
+
+    return createElement({
+        tag: "div",
+        attributes: { id: "inputs" },
+        children: [input1, selector, input2],
+    });
 };
 
-const button = createElement({
-    tag: "button",
-    text: "=",
-    eventListeners: {
-        click: handleClick,
-    },
-});
+const App = () => {
+    const state = {
+        val1: 0,
+        val2: 0,
+    };
+    
+    const results = createElement({
+        tag: "div",
+        attributes: {
+            id: "results",
+        },
+    });
 
-const inputs = createElement({
-    tag: "div",
-    attributes: { className: "inputs" },
-    children: [input1, selector, input2, button],
-});
+    return createElement({
+        tag: "div",
+        attributes: { id: "app" },
+        children: [
+            Inputs(),
+            Equals(state.val1, state.val2, selector.value, results),
+            results,
+        ],
+    });
+};
 
-const components = [inputs];
+const components = [App()];
 components.forEach(component => {
     appRoot.appendChild(component);
 });

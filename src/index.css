@@ -2,12 +2,12 @@ body {
     background-color: #111;
 }
 
-.inputs {
+#app {
     display: flex;
     padding: 0.2rem;
 }
 
-.inputs input {
+input {
     background-color: #222;
     color: #bbb;
     border: 1px solid #555;
@@ -37,5 +37,9 @@ select {
     padding: 0.2rem 0.4rem;
     margin: 0.2rem;
     border-radius: 5px;
+}
+
+#results {
+    display: block;
 }
 
