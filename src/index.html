@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WASM C++</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+    <input id="input1" />
+    <select id="operator">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="x">x</option>
+        <option value="÷">÷</option>
+    </select>
+    <input id="input2" />
+    <button id="equals">=</button>
+    <div id="results"></div>
+    <script src="main.js"></script>
+    <script>
+        const wasmAdd = Module.cwrap("add", "number", ["number", "number"]);
+        const wasmSubtract = Module.cwrap("subtract", "number", ["number", "number"]);
+        const wasmMultiply = Module.cwrap("multiply", "number", ["number", "number"]);
+        const wasmDivide = Module.cwrap("divide", "number", ["number", "number"]);
+
+        const $ = selector => document.querySelector(selector);
+
+        const getCalculation = (x, y, operator) => {
+            let result;
+            switch (operator) {
+                case "+":
+                    result = wasmAdd(x, y);
+                    break;
+                case "-":
+                    result = wasmSubtract(x, y);
+                    break;
+                case "x":
+                    result = wasmMultiply(x, y);
+                    break;
+                case "÷":
+                    result = wasmDivide(x, y);
+                    break;
+            }
+           return `${x} ${operator} ${y} = ${result}`;
+        };
+
+        const handleClick = () => {
+            const val1 = $("#input1").value;
+            const val2 = $("#input2").value;
+            const operator = $("#operator").value;
+
+            const p = document.createElement("p");
+            p.innerText = getCalculation(val1, val2, operator);
+            $("#results").appendChild(p);
+        };
+
+        $("#equals").addEventListener("click", handleClick);
+    </script>
+</body>
+
+</html>

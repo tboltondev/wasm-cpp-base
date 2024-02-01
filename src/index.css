@@ -2,11 +2,6 @@ body {
     background-color: #111;
 }
 
-.inputs {
-    display: flex;
-    padding: 0.2rem;
-}
-
 input {
     background-color: #222;
     color: #bbb;
