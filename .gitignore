@@ -1,1 +1,6 @@
 build
+wasmBuild
+dist
+public/wasm
+
+node_modules

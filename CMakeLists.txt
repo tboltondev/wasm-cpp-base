@@ -7,15 +7,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(
   main
-  src/main.cpp
-  src/add.cpp
-  src/add.h
-  src/subtract.cpp
-  src/subtract.h
-  src/multiply.cpp
-  src/multiply.h
-  src/divide.cpp
-  src/divide.h)
+  src/wasmMath/main.cpp
+  src/wasmMath/add.cpp
+  src/wasmMath/add.h
+  src/wasmMath/subtract.cpp
+  src/wasmMath/subtract.h
+  src/wasmMath/multiply.cpp
+  src/wasmMath/multiply.h
+  src/wasmMath/divide.cpp
+  src/wasmMath/divide.h)
 
 if(EMSCRIPTEN)
   target_link_options(
