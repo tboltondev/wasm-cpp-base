@@ -7,7 +7,7 @@ body {
     padding: 0.2rem;
 }
 
-.inputs input {
+input {
     background-color: #222;
     color: #bbb;
     border: 1px solid #555;
