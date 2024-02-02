@@ -1,4 +1,4 @@
-#include "divide.h"
+#include "divide.hpp"
 
 extern "C" {
 

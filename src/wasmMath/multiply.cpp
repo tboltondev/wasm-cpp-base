@@ -1,4 +1,4 @@
-#include "multiply.h"
+#include "multiply.hpp"
 
 extern "C" {
 

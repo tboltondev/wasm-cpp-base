@@ -9,13 +9,13 @@ add_executable(
   main
   src/wasmMath/main.cpp
   src/wasmMath/add.cpp
-  src/wasmMath/add.h
+  src/wasmMath/add.hpp
   src/wasmMath/subtract.cpp
-  src/wasmMath/subtract.h
+  src/wasmMath/subtract.hpp
   src/wasmMath/multiply.cpp
-  src/wasmMath/multiply.h
+  src/wasmMath/multiply.hpp
   src/wasmMath/divide.cpp
-  src/wasmMath/divide.h)
+  src/wasmMath/divide.hpp)
 
 if(EMSCRIPTEN)
   target_link_options(
