@@ -1,4 +1,4 @@
-#include "subtract.h"
+#include "subtract.hpp"
 
 extern "C" {
 
