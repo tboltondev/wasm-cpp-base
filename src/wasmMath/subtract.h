@@ -6,9 +6,6 @@
 EMSCRIPTEN_KEEPALIVE
 #endif
 
-extern "C" {
-
 int subtract(int a, int b);
-}
 
 #endif

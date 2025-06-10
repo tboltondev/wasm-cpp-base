@@ -6,9 +6,6 @@
 EMSCRIPTEN_KEEPALIVE
 #endif
 
-extern "C" {
-
 int multiply(int a, int b);
-}
 
 #endif

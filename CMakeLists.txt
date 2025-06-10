@@ -1,21 +1,18 @@
 cmake_minimum_required(VERSION 3.28)
 
-project(wasm_cpp_base LANGUAGES CXX)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project(wasm_c_template LANGUAGES C)
 
 add_executable(
   main
-  src/wasmMath/main.cpp
-  src/wasmMath/add.cpp
-  src/wasmMath/add.hpp
-  src/wasmMath/subtract.cpp
-  src/wasmMath/subtract.hpp
-  src/wasmMath/multiply.cpp
-  src/wasmMath/multiply.hpp
-  src/wasmMath/divide.cpp
-  src/wasmMath/divide.hpp)
+  src/wasmMath/main.c
+  src/wasmMath/add.c
+  src/wasmMath/add.h
+  src/wasmMath/subtract.c
+  src/wasmMath/subtract.h
+  src/wasmMath/multiply.c
+  src/wasmMath/multiply.h
+  src/wasmMath/divide.c
+  src/wasmMath/divide.h)
 
 if(EMSCRIPTEN)
   target_link_options(

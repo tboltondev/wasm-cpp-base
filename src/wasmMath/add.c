@@ -1,6 +1,4 @@
-#include "add.hpp"
-
-extern "C" {
+#include "add.h"
 
 int add(int a, int b) { return a + b; }
-}
+
